@@ -1,0 +1,25 @@
+{
+  "name": "bitclout",
+  "version": "0.0.1",
+  "description": "Control a BitClout account using JavaScript.",
+  "main": "main.js",
+  "scripts": {
+    "docbuild": "documentation readme *.js --section=API"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjaminwoods/bitclout.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benjaminwoods/bitclout/issues"
+  },
+  "homepage": "https://github.com/benjaminwoods/bitclout#readme",
+  "author": "Benjamin Woods",
+  "license": "MIT",
+  "dependencies": {
+    "taiko": "^1.2.3"
+  }
+}

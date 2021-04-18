@@ -29,7 +29,7 @@ class CloutNav {
 {
   // Attach modules
   let modules = [
-    'auth', 'global', 'startup', 'user', 'self', 'transactions'
+    'auth', 'interact', 'global', 'startup', 'user', 'self', 'transactions'
   ];
 
   // Nice tracking

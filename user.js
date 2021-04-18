@@ -144,7 +144,51 @@ const profile = async function (parent, username) {
   return result
 }
 
+/**
+ * Get hodlers of username's coin.
+ *
+ * @method
+ * @async
+ * @param {string} username - Username to extract metadata from.
+ * @returns {object} hodlers.
+ */
+const hodlers = async function (parent, username) {
+  // Check browser state
+  await promiseLoggedIn(
+    promiseBrowserOpen(
+      Promise.resolve(parent)
+    )
+  );
+
+  // Check username
+  if (typeof username === 'undefined') {
+    throw 'No username given.';
+  }
+
+  // Go to user profile
+  await goto(parent, `https://bitclout.com/u/${username}?tab=creator-coin`);
+
+  // Get hodlers as a string
+  let hodlers_str = await taiko.$('creator-profile-hodlers').text();
+  let hodlers_arr = hodlers_str.split('\n');
+
+  // Convert to object
+  let obj = {}
+  let N = hodlers_arr.length/3 - 1;
+  for (let i of Array(N).keys()) {
+    let name = hodlers_arr[3*i];
+    let amount = parseFloat(hodlers_arr[3*i+1]);
+
+    obj[hodlers_arr[3*i]] = {
+      amount: amount
+    };
+  }
+
+  return obj;
+}
+
 module.exports = {
   follow: follow,
-  profile: profile
+  profile: profile,
+  hodlers: hodlers
 };

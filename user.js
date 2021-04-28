@@ -169,7 +169,17 @@ const hodlers = async function (parent, username) {
   await goto(parent, `https://bitclout.com/u/${username}?tab=creator-coin`);
 
   // Get hodlers as a string
-  let hodlers_str = await taiko.$('creator-profile-hodlers').text();
+  let hodlers_str;
+  while (true) {
+    hodlers_str = await taiko.$('creator-profile-hodlers').text();
+    if (!hodlers_str.includes('\n')) {
+      // Number of followers hasn't loaded yet
+      await new Promise(resolve => setTimeout(resolve, 100))
+      hodlers_str = await taiko.$('creator-profile-hodlers').text();
+    } else {
+      break
+    }
+  }
   let hodlers_arr = hodlers_str.split('\n');
 
   // Convert to object

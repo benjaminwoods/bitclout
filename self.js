@@ -52,21 +52,18 @@ const portfolio = async function (parent) {
 
   let holdings = {};
 
-  let nameElements = await taiko.$('div.holdings__name span').elements();
+  let nameElements = await taiko.$('.holdings__creator-coin-name').elements();
   for (let element of nameElements) {
-    let name = await element.text();
-    if (name !== '') {
-      holdings[name] = {};
-    }
-  }
-  let names = Object.keys(holdings);
+    // Get "name\n$xx.yy"
+    let text = await element.text();
+    if (text !== '') {
+      // Split into name and USD format price
+      let spl = text.replace(/' '/g,'').split('\n')
 
-  let amountElements = await taiko.$(
-    'div.holdings__creator-coin-total div.text-right'
-  ).elements();
-  for (let i in names) {
-    let amount = await amountElements[i].text();
-    holdings[names[i]] = {amount: parseFloat(amount)};
+      let name = spl[0];
+      let amount = parseFloat(spl[1].slice(1)) // Trim $
+      holdings[name] = {amount: amount};
+    }
   }
 
   return holdings

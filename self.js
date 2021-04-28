@@ -139,9 +139,43 @@ const updateProfile = async function (parent, profile) {
   await taiko.click(taiko.link('Update profile'));
 }
 
+
+/**
+ * Check notifications of logged in user.
+ *
+ * @method
+ * @async
+ * @param {Array} list - Notifications.
+ */
+const notifications = async function (parent) {
+  // Check browser state
+  await promiseLoggedIn(
+    promiseBrowserOpen(
+      Promise.resolve(parent)
+    )
+  );
+
+  // Go to update profile
+  await goto(parent, 'https://bitclout.com/notifications');
+
+  let list = [];
+  for (let i of Array(10).keys()) {
+    let notification_str = await taiko.$(`div [data-sid="${i}"]`).text();
+    list.push({
+      type: null,
+      info: {
+        text: notification_str
+      }
+    });
+  }
+
+  return list
+}
+
 module.exports = {
   balance: balance,
   portfolio: portfolio,
   bitcoinAddress: bitcoinAddress,
-  updateProfile: updateProfile
+  updateProfile: updateProfile,
+  notifications: notifications
 }

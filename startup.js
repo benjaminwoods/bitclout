@@ -12,7 +12,10 @@ const taiko = require('taiko');
  */
 const open = async function (parent) {
   if (parent.status.browser === false) {
-    await taiko.openBrowser({headless: false});
+    await taiko.openBrowser({
+      headless: false,
+      args:['--window-size=600,900']
+    });
 
     taiko.setConfig({
       observeTime: 500,

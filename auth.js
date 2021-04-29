@@ -25,11 +25,14 @@ const login = async function (parent, phrase) {
   }
 
   // Login
-  await goto(parent, "https://bitclout.com/log-in");
+  await goto(parent, "https://bitclout.com");
+  await taiko.click(taiko.link('Login'));
   await taiko.focus(taiko.$('textarea.form-control'));
   await taiko.clear();
   await taiko.write(secret_phrase);
   await taiko.click(taiko.button('Load Account'));
+  await taiko.click(taiko.$('div.avatar'))
+  await taiko.click(taiko.button('Log in to bitclout.com'));
 
   // Set new URL
   parent.status.current_url = await taiko.currentURL();

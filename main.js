@@ -28,7 +28,9 @@ class CloutNav {
 
 {
   // Attach modules
-  let modules = ['auth', 'startup', 'user', 'self', 'transactions'];
+  let modules = [
+    'auth', 'interact', 'global', 'startup', 'user', 'self', 'transactions'
+  ];
 
   // Nice tracking
   let nice = require(`./nice`);

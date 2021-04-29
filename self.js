@@ -91,8 +91,88 @@ const bitcoinAddress = async function (parent) {
   return addr
 }
 
+/**
+ * Update profile of logged in user.
+ *
+ * @method
+ * @async
+ * @param {object} profile - Profile info.
+ */
+const updateProfile = async function (parent, profile) {
+  // Check browser state
+  await promiseLoggedIn(
+    promiseBrowserOpen(
+      Promise.resolve(parent)
+    )
+  );
+
+  // Go to update profile
+  await goto(parent, 'https://bitclout.com/update-profile');
+
+  if ('username' in profile) {
+    let element = await taiko.$('input', taiko.below('Username'));
+    await taiko.focus(element);
+    await taiko.clear();
+    await taiko.write(profile.username);
+  }
+
+  if ('text' in profile) {
+    let element = await taiko.$('textarea', taiko.below('Description'));
+    await taiko.focus(element);
+    await taiko.clear();
+    await taiko.write(profile.text);
+  }
+
+  if ('reward' in profile) {
+    let element = await taiko.$(
+      'textarea', taiko.below('Founder Reward Percentage')
+    );
+    await taiko.focus(element);
+    await taiko.clear();
+    await taiko.write(profile.reward);
+  }
+
+  await taiko.scrollDown(200);
+  await taiko.click(taiko.link('Update profile'));
+}
+
+
+/**
+ * Check notifications of logged in user.
+ *
+ * @method
+ * @async
+ * @param {Array} list - Notifications.
+ */
+const notifications = async function (parent) {
+  // Check browser state
+  await promiseLoggedIn(
+    promiseBrowserOpen(
+      Promise.resolve(parent)
+    )
+  );
+
+  // Go to update profile
+  await goto(parent, 'https://bitclout.com/notifications');
+
+  let list = [];
+  for (let i of Array(10).keys()) {
+    let notification_str = await taiko.$(`div [data-sid="${i}"]`).text();
+    list.push({
+      type: null,
+      info: {
+        text: notification_str
+      }
+    });
+  }
+
+  return list
+}
+
 module.exports = {
   balance: balance,
   portfolio: portfolio,
-  bitcoinAddress: bitcoinAddress
+  bitcoinAddress: bitcoinAddress,
+  updateProfile: updateProfile,
+  notifications: notifications
 }
